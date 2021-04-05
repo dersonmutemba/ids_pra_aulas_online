@@ -60,20 +60,20 @@ def iniciarDados(conexao):
     criarTabelas(conexao)
 
     aulas = [
-        (7068575499, "Electrotecnia Teórica", 0, 13, "https://drive.google.com/open?id=1kgNIwwojKDl1zTNsQ_hq6F-lHoHu540m0P0qsicpkRs&authuser=0"),
-        (7068575499, "Análise Matemática II", 0, 15, "-"),
-        (7068575499, "Programação II", 0, 17, "https://docs.google.com/spreadsheets/d/1bJVtHqId8bf1VK1Lvy5LVQLxOmRg7zVVdIm7O1PyVCI/edit?usp=sharing"),
-        (2720416423, "Sistemas Operativos", 1, 13, "https://tinyurl.com/FP-SO-2021"),
-        (2720416423, "Análise Matemática II", 1, 15, "-"),
-        (2720416423, "Matemática Discreta", 1, 17, "https://docs.google.com/spreadsheets/d/1tG0whh0dcFO4W5Jim7d04fH2fwSq2_Se/edit#gid=228312073"),
-        (3711443715, "Sistemas Operativos", 2, 11, "https://tinyurl.com/FP-SO-2021"),
-        (3711443715, "Electrotecnia Teórica", 2, 13, "https://drive.google.com/open?id=1kgNIwwojKDl1zTNsQ_hq6F-lHoHu540m0P0qsicpkRs&authuser=0"),
-        (8235178394, "Programação II", 2, 15, "https://docs.google.com/spreadsheets/d/1bJVtHqId8bf1VK1Lvy5LVQLxOmRg7zVVdIm7O1PyVCI/edit?usp=sharing"),
-        (3711443715, "Análise Matemática II", 3, 13, "-"),
-        (3711443715, "Electrônica Analógica", 3, 15, "https://drive.google.com/open?id=1FNut2bmIHHqjN9TKsNVN275uHnNdbgdDBKDa2ocpUTE&authuser=0"),
-        (3711443715, "Matemática Discreta", 3, 17, "https://docs.google.com/spreadsheets/d/1tG0whh0dcFO4W5Jim7d04fH2fwSq2_Se/edit#gid=228312073"),
-        (8063906668, "Electrônica Analógica", 4, 11, "https://drive.google.com/open?id=1yY_3ho3wNQTea1y4GGw3T9zfRROWDJqd8t7y413pYHw&authuser=0"),
-        (8063906668, "Electrotecnia Teórica", 4, 13, "https://drive.google.com/open?id=1kgNIwwojKDl1zTNsQ_hq6F-lHoHu540m0P0qsicpkRs&authuser=0"),
+        (3387563893, "Electrotecnia Teórica", 0, 13, "https://bit.ly/3cQ2A8D"),
+        (3387563893, "Análise Matemática II", 0, 15, "-"),
+        (7068575499, "Programação II", 0, 17, "https://bit.ly/2Q1HjzS"),
+        (2348432941, "Sistemas Operativos", 1, 13, "https://tinyurl.com/FP-SO-2021"),
+        (3043530187, "Análise Matemática II", 1, 15, "-"),
+        (3043530187, "Matemática Discreta", 1, 17, "https://bit.ly/2PAuqwD"),
+        (8235178394, "Sistemas Operativos", 2, 11, "https://tinyurl.com/FP-SO-2021"),
+        (3711443715, "Electrotecnia Teórica", 2, 13, "https://bit.ly/3cQ2A8D"),
+        (8235178394, "Programação II", 2, 15, "https://bit.ly/2Q1HjzS"),
+        (6363897612, "Análise Matemática II", 3, 13, "-"),
+        (7068575499, "Electrônica Analógica", 3, 15, "https://bit.ly/3moS8I7"),
+        (9728863709, "Matemática Discreta", 3, 17, "https://bit.ly/2PAuqwD"),
+        (3265261727, "Electrônica Analógica", 4, 11, "https://bit.ly/3cQ46r0"),
+        (3265261727, "Electrotecnia Teórica", 4, 13, "https://bit.ly/2Q1HjzS"),
     ]
     
     for i in range(len(aulas)):
