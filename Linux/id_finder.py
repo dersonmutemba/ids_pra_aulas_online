@@ -251,7 +251,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) == 1:
         username = os.getlogin()
-        desktop = "C:/Users/" + username + "/Desktop/"
+        desktop = "/home/" + username + "/Desktop/"
         cwd = os.getcwd()
         commands = [
             'echo cd "' + cwd + '">>"' + desktop + 'aula.sh"',
