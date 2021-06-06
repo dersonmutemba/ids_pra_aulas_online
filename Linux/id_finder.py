@@ -257,7 +257,7 @@ if __name__ == "__main__":
             'echo cd "' + cwd + '">>"' + desktop + 'aula.sh"',
             'echo python3 id_finder.py a>>"' + desktop + 'aula.sh"',
             'echo cd "' + cwd + '">>"' + desktop + 'presenca.sh"',
-            'echo python3 id_finder.py p>>"' + desktop + 'presenca.sh"'
+            'echo python3 id_finder.py p>>"' + desktop + 'presenca.sh"',
             'echo cd "' + cwd + '">>"' + desktop + 'exame.sh"',
             'echo python3 id_finder.py e>>"' + desktop + 'exame.sh"'
             ]
