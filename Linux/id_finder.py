@@ -226,7 +226,7 @@ def executarComando(comando):
 # Func que abre o ID actual
 def abrirAula(id):
     if id != 0:
-        comando = "start https://zoom.us/j/" + str(id)
+        comando = "xdg-open https://zoom.us/j/" + str(id)
         print("Abrindo a aula...")
         executarComando(comando)
     else:
@@ -237,7 +237,7 @@ def abrirPresenca(presenca):
     if presenca == "-":
         print("Esta aula não tem lista de presença.")
     elif presenca != ".":
-        comando = "start " + str(presenca)
+        comando = "xdg-open " + str(presenca)
         print("Abrindo a lista de presenças...")
         executarComando(comando)
 
