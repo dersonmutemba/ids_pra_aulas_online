@@ -37,9 +37,17 @@ def criarTabelas(conexao):
                                     presenca text
                                 );'''
 
+    sql_criar_tabela_exames = '''CREATE TABLE IF NOT EXISTS exames(
+                                    nr integer PRIMARY KEY,
+                                    id integer NOT NULL,
+                                    cadeira text NOT NULL,
+                                    dia integer NOT NULL
+                                );'''                        
+
     try:
         c = conexao.cursor()
         c.execute(sql_criar_tabela_aulas)
+        c.execute(sql_criar_tabela_exames)
 
     except Error as e:
         print(e)
@@ -51,6 +59,15 @@ def adicionarAula(conexao, aula):
                 VALUES(?, ?, ?, ?, ?) '''
     c = conexao.cursor()
     c.execute(sql, aula)
+    conexao.commit()
+    return c.lastrowid
+
+def adicionarExame(conexao, exame):
+    
+    sql = ''' INSERT INTO exames(id, cadeira, dia)
+                VALUES(?, ?, ?) '''
+    c = conexao.cursor()
+    c.execute(sql, exame)
     conexao.commit()
     return c.lastrowid
 
@@ -75,9 +92,21 @@ def iniciarDados(conexao):
         (3265261727, "Electrônica Analógica", 4, 11, "https://bit.ly/3cQ46r0"),
         (3265261727, "Electrotecnia Teórica", 4, 13, "https://bit.ly/2Q1HjzS"),
     ]
+
+    exames = [
+        (2720416423, "Electrotecnia Teórica", 7),
+        (3043530187, "Matemática Discreta", 8),
+        (9994156338, "Programação II", 10),
+        (6363897612, "Análise Matemática II", 11),
+        (6159608597, "Electrónica Analógica", 15),
+        (7068575499, "Sistemas Operativos", 17)
+    ]
     
     for i in range(len(aulas)):
         adicionarAula(conexao, aulas[i])
+
+    for i in range(len(exames)):
+        adicionarExame(conexao, exames[i])
 
 # Esta função retorna a aula decorrendo na hora selecionada
 def selecionarAulas(conexao, hora, dia):
@@ -93,6 +122,22 @@ def selecionarAulas(conexao, hora, dia):
 
     if len(rows) == 0:
         print("Nenhuma aula decorre no momento.")
+        return 0
+    else:
+        return int(rows[0][0])
+
+# Esta função retorna o exame decorrendo na hora selecionada
+def selecionarExame(conexao, dia):
+
+    sql = """ SELECT id FROM exames WHERE dia = ?"""
+
+    c = conexao.cursor()
+    c.execute(sql, str(dia))
+
+    rows = c.fetchall()
+
+    if len(rows) == 0:
+        print("Nenhum exame decorre no momento.")
         return 0
     else:
         return int(rows[0][0])
@@ -167,6 +212,9 @@ def diaActual():
     dia = agora.today().weekday()
     return dia
 
+def dia():
+    return datetime.now().day
+
 # __________________________________ #
 ### Abaixo as funcs que usam o cmd ###
 # __________________________________ #
@@ -178,7 +226,7 @@ def executarComando(comando):
 # Func que abre o ID actual
 def abrirAula(id):
     if id != 0:
-        comando = "xdg-open https://zoom.us/j/" + str(id)
+        comando = "start https://zoom.us/j/" + str(id)
         print("Abrindo a aula...")
         executarComando(comando)
     else:
@@ -189,7 +237,7 @@ def abrirPresenca(presenca):
     if presenca == "-":
         print("Esta aula não tem lista de presença.")
     elif presenca != ".":
-        comando = "xdg-open " + str(presenca)
+        comando = "start " + str(presenca)
         print("Abrindo a lista de presenças...")
         executarComando(comando)
 
@@ -203,13 +251,15 @@ if __name__ == "__main__":
 
     if len(sys.argv) == 1:
         username = os.getlogin()
-        desktop = "/home/" + username + "/Desktop/"
+        desktop = "C:/Users/" + username + "/Desktop/"
         cwd = os.getcwd()
         commands = [
             'echo cd "' + cwd + '">>"' + desktop + 'aula.sh"',
             'echo python3 id_finder.py a>>"' + desktop + 'aula.sh"',
             'echo cd "' + cwd + '">>"' + desktop + 'presenca.sh"',
             'echo python3 id_finder.py p>>"' + desktop + 'presenca.sh"'
+            'echo cd "' + cwd + '">>"' + desktop + 'exame.sh"',
+            'echo python3 id_finder.py e>>"' + desktop + 'exame.sh"'
             ]
         for command in commands:
             executarComando(command)
@@ -219,6 +269,8 @@ if __name__ == "__main__":
             abrirAula(selecionarAulas(conexao, horaActual(), diaActual()))
         elif sys.argv[1] == "p":
             abrirPresenca(selecionarPresenca(conexao, horaActual(), diaActual()))
+        elif sys.argv[1] == "e":
+            abrirAula(selecionarExame(conexao, dia()))
         else:
             print("Erro. Regra: python3 id_finder.py [argumento]\n" +
                     "'a' para abrir a aula actual\n" + 
