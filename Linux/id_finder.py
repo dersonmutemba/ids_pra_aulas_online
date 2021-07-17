@@ -226,7 +226,7 @@ def executarComando(comando):
 # Func que abre o ID actual
 def abrirAula(id):
     if id != 0:
-        comando = "start https://zoom.us/j/" + str(id)
+        comando = "xdg-open https://zoom.us/j/" + str(id)
         print("Abrindo a aula...")
         executarComando(comando)
     else:
@@ -237,7 +237,7 @@ def abrirPresenca(presenca):
     if presenca == "-":
         print("Esta aula não tem lista de presença.")
     elif presenca != ".":
-        comando = "start " + str(presenca)
+        comando = "xdg-open " + str(presenca)
         print("Abrindo a lista de presenças...")
         executarComando(comando)
 
@@ -251,13 +251,13 @@ if __name__ == "__main__":
 
     if len(sys.argv) == 1:
         username = os.getlogin()
-        desktop = "C:/Users/" + username + "/Desktop/"
+        desktop = "/home/" + username + "/Desktop/"
         cwd = os.getcwd()
         commands = [
             'echo cd "' + cwd + '">>"' + desktop + 'aula.sh"',
             'echo python3 id_finder.py a>>"' + desktop + 'aula.sh"',
             'echo cd "' + cwd + '">>"' + desktop + 'presenca.sh"',
-            'echo python3 id_finder.py p>>"' + desktop + 'presenca.sh"'
+            'echo python3 id_finder.py p>>"' + desktop + 'presenca.sh"',
             'echo cd "' + cwd + '">>"' + desktop + 'exame.sh"',
             'echo python3 id_finder.py e>>"' + desktop + 'exame.sh"'
             ]
