@@ -77,30 +77,26 @@ def iniciarDados(conexao):
     criarTabelas(conexao)
 
     aulas = [
-        (3387563893, "Electrotecnia Teórica", 0, 13, "https://bit.ly/3cQ2A8D"),
-        (3387563893, "Análise Matemática II", 0, 15, "-"),
-        (7068575499, "Programação II", 0, 17, "https://bit.ly/2Q1HjzS"),
-        (2348432941, "Sistemas Operativos", 1, 13, "https://tinyurl.com/FP-SO-2021"),
-        (3043530187, "Análise Matemática II", 1, 15, "-"),
-        (3043530187, "Matemática Discreta", 1, 17, "https://bit.ly/2PAuqwD"),
-        (8235178394, "Sistemas Operativos", 2, 11, "https://tinyurl.com/FP-SO-2021"),
-        (3711443715, "Electrotecnia Teórica", 2, 13, "https://bit.ly/3cQ2A8D"),
-        (8235178394, "Programação II", 2, 15, "https://bit.ly/2Q1HjzS"),
-        (6363897612, "Análise Matemática II", 3, 13, "-"),
-        (7068575499, "Electrônica Analógica", 3, 15, "https://bit.ly/3moS8I7"),
-        (9728863709, "Matemática Discreta", 3, 17, "https://bit.ly/2PAuqwD"),
-        (3265261727, "Electrônica Analógica", 4, 11, "https://bit.ly/3cQ46r0"),
-        (3265261727, "Electrotecnia Teórica", 4, 13, "https://bit.ly/2Q1HjzS"),
+        (3710025929, "Análise Matemática III", 0, 13, "-"),
+        (3710025929, "Electrónica de Rádio", 0, 15, "-"),
+        (3710025929, "Teoria de Circuitos", 0, 17, "-"),
+        (6363897612, "Electrónica Digital", 1, 13, "-"),
+        (6363897612, "Análise Númerica", 1, 15, "-"),
+        (8235178394, "Programação III", 1, 17, "-"),
+        (6363897612, "Electrónica Digital", 2, 7, "-"),
+        (3710025929, "Análise Matemática III", 2, 9, "-"),
+        (8680491980, "Electrónica Digital", 3, 13, "-"),
+        (8680491980, "Análise Númerica", 3, 15, "-"),
+        (8680491980, "Análise Matemática III", 3, 17, "-"),
+        (8680491980, "Electrónica Digital", 4, 13, "-"),
+        (8680491980, "Análise Númerica", 4, 15, "-"),
+        (8680491980, "Análise Matemática III", 4, 17, "-"),
+        (9994156338, "Teoria de Circuitos", 5, 7, "-"),
+        (9994156338, "Electrónica de Rádio", 5, 9, "-"),
+        (2348432941, "Programação III", 5, 11, "-")
     ]
 
-    exames = [
-        (2720416423, "Electrotecnia Teórica", 7),
-        (3043530187, "Matemática Discreta", 8),
-        (9994156338, "Programação II", 10),
-        (6363897612, "Análise Matemática II", 11),
-        (6159608597, "Electrónica Analógica", 15),
-        (7068575499, "Sistemas Operativos", 17)
-    ]
+    exames = []
     
     for i in range(len(aulas)):
         adicionarAula(conexao, aulas[i])
@@ -132,7 +128,7 @@ def selecionarExame(conexao, dia):
     sql = """ SELECT id FROM exames WHERE dia = ?"""
 
     c = conexao.cursor()
-    c.execute(sql, str(dia))
+    c.execute(sql, (str(dia),))
 
     rows = c.fetchall()
 
@@ -254,11 +250,11 @@ if __name__ == "__main__":
         desktop = "/home/" + username + "/Desktop/"
         cwd = os.getcwd()
         commands = [
-            'echo cd "' + cwd + '">>"' + desktop + 'aula.sh"',
+            'echo cd "' + cwd + '">"' + desktop + 'aula.sh"',
             'echo python3 id_finder.py a>>"' + desktop + 'aula.sh"',
-            'echo cd "' + cwd + '">>"' + desktop + 'presenca.sh"',
+            'echo cd "' + cwd + '">"' + desktop + 'presenca.sh"',
             'echo python3 id_finder.py p>>"' + desktop + 'presenca.sh"',
-            'echo cd "' + cwd + '">>"' + desktop + 'exame.sh"',
+            'echo cd "' + cwd + '">"' + desktop + 'exame.sh"',
             'echo python3 id_finder.py e>>"' + desktop + 'exame.sh"'
             ]
         for command in commands:
