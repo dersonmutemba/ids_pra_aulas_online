@@ -29,7 +29,9 @@ UI no caso de nenhuma aula decorrer.
 
 __________________________________________________________________________________________________________________________________
 [Versão CLI - Windows](https://github.com/dersonmutemba/ids_pra_aulas_online/files/6836975/Gadget.pra.EAD.-.Windows.zip)
+
 [Versão CLI - Linux](https://github.com/dersonmutemba/ids_pra_aulas_online/files/6836976/Gadget.pra.EAD.-.Linux.zip)
+
 [Versão GUI - Windows](https://github.com/dersonmutemba/ids_pra_aulas_online/files/6836979/setup.zip)
 
 
