@@ -6,7 +6,7 @@ Requisitos:
     * Python3 instalado: pode instalar usando o seguinte link:
         https://www.python.org/downloads/
     * CMD Windows;
-    * Capacidade de correr Bash Files
+    * Capacidade de correr Batch Files
 
 Enjoy e dê feedback.
 https://github.com/dersonmutemba
