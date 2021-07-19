@@ -1,0 +1,15 @@
+﻿<Window x:Class="ID_Finder.Loading_Screen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ID_Finder"
+        mc:Ignorable="d"
+        Title="Loading_Screen" Height="200" Width="400" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ShowInTaskbar="False">
+    <Grid>
+        <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Width="90" Height="50" Source="installation_box.png"/>
+            <Label VerticalAlignment="Center" FontSize="14" FontWeight="Bold">Gerando a base de dados. Aguarde...</Label>
+        </DockPanel>
+    </Grid>
+</Window>

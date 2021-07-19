@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Blend for Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ID Finder", "ID Finder\ID Finder.csproj", "{B491CA8E-4428-46C1-9348-50BEF366C8B4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B491CA8E-4428-46C1-9348-50BEF366C8B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B491CA8E-4428-46C1-9348-50BEF366C8B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B491CA8E-4428-46C1-9348-50BEF366C8B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B491CA8E-4428-46C1-9348-50BEF366C8B4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FAE29FF8-6E8A-4E03-8C9C-2294EE9E38DD}
+	EndGlobalSection
+EndGlobal
