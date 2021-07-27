@@ -14,6 +14,8 @@ namespace ID_Finder
     public partial class MainWindow : Window
     {
         private bool dark = (bool) Properties.Settings.Default.mode;
+        private long actualAula = 0;
+        private ProximaAula proximaAula = new ProximaAula(0, "");
 
         public MainWindow()
         {
@@ -86,6 +88,8 @@ namespace ID_Finder
 
         private void getAula()
         {
+            proximaAula = new ProximaAula(0, "");
+
             ArrayList weekday = new ArrayList
             {
                 DayOfWeek.Monday,
@@ -127,6 +131,44 @@ namespace ID_Finder
                 stackPanel2.Visibility = Visibility.Hidden;
                 labelNotificacao.Visibility = Visibility.Visible;
             }
+
+            if (model?.Fim/100 == DateTime.Now.Hour || model == null)
+            {
+                now = DateTime.Now.Hour * 100 + DateTime.Now.Minute + 30;
+                model = Controller.getAula(
+                ((ComboBoxItem)comboBox.Items.GetItemAt(comboBox.SelectedIndex))
+                .Content.ToString(),
+                weekday.IndexOf(DateTime.Now.DayOfWeek), now);
+                if(model != null)
+                    proximaAula = new ProximaAula(model.ID, model.Aula);
+            }
+            else
+            {
+                now = (DateTime.Now.Hour + 1) * 100 + DateTime.Now.Minute;
+                Model m = Controller.getAula(
+                ((ComboBoxItem)comboBox.Items.GetItemAt(comboBox.SelectedIndex))
+                .Content.ToString(),
+                weekday.IndexOf(DateTime.Now.DayOfWeek), now);
+                if (m != null && !model.Aula.Equals(m.Aula))
+                    proximaAula = new ProximaAula(m.ID, m.Aula);
+                else
+                {
+                    now = (DateTime.Now.Hour + 2) * 100 + DateTime.Now.Minute;
+                    model = Controller.getAula(
+                    ((ComboBoxItem)comboBox.Items.GetItemAt(comboBox.SelectedIndex))
+                    .Content.ToString(),
+                    weekday.IndexOf(DateTime.Now.DayOfWeek), now);
+                    if (model != null)
+                        proximaAula = new ProximaAula(model.ID, model.Aula);
+                }
+            }
+            if (proximaAula.ID == 0)
+                buttonSeguir.Visibility = Visibility.Hidden;
+            else
+            {
+                buttonSeguir.Visibility = Visibility.Visible;
+                buttonSeguir.ToolTip = proximaAula.Cadeira;
+            }
         }
 
         private void buttonAbrir_Click(object sender, RoutedEventArgs e)
@@ -158,5 +200,23 @@ namespace ID_Finder
         {
             System.Diagnostics.Process.Start("https://github.com/dersonmutemba");
         }
+
+        private void buttonSeguir_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://zoom.us/j/" + proximaAula.ID);
+        }
+    }
+
+    public struct ProximaAula
+    {
+        public ProximaAula(long id, string cadeira)
+        {
+            ID = id;
+            Cadeira = cadeira;
+        }
+
+        public long ID { get; set; }
+        public string Cadeira { get; set; }
+
     }
 }
