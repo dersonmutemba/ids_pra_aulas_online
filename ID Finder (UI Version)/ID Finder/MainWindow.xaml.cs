@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using System.IO;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,17 +16,21 @@ namespace ID_Finder
     public partial class MainWindow : Window
     {
         private bool dark = (bool) Properties.Settings.Default.mode;
-        private long actualAula = 0;
         private ProximaAula proximaAula = new ProximaAula(0, "");
+        private string linkPresenca = "";
 
         public MainWindow()
         {
             if (!File.Exists("horarios.db"))
             {
-                Loading_Screen ls = new Loading_Screen();
-                ls.Show();
-                Controller.inicializarDados();
-                ls.Close();
+                Inicializacao();
+            }
+            if (!(bool) Properties.Settings.Default.updated)
+            {
+                File.Delete("horarios.db");
+                Inicializacao();
+                Properties.Settings.Default.updated = true;
+                Properties.Settings.Default.Save();
             }
             InitializeComponent();
             comboBox.SelectedIndex = (int)Properties.Settings.Default.turma;
@@ -34,6 +40,16 @@ namespace ID_Finder
             timer.Enabled = true;
             timer.Tick += Timer_Tick;
             timer.Start();
+            SearchUpdate();
+            
+        }
+
+        private void Inicializacao()
+        {
+            Loading_Screen ls = new Loading_Screen();
+            ls.Show();
+            Controller.inicializarDados();
+            ls.Close();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -49,7 +65,6 @@ namespace ID_Finder
                 labelAula.Foreground = Brushes.Black;
                 labelDia.Foreground = Brushes.Black;
                 labelID.Foreground = Brushes.Black;
-                labelLista.Foreground = Brushes.Black;
                 labelNotificacao.Foreground = Brushes.Black;
                 labelPeriodo.Foreground = Brushes.Black;
                 stackPanel2.Background = new SolidColorBrush(
@@ -61,7 +76,6 @@ namespace ID_Finder
                 labelAula.Foreground = Brushes.White;
                 labelDia.Foreground = Brushes.White;
                 labelID.Foreground = Brushes.White;
-                labelLista.Foreground = Brushes.White;
                 labelNotificacao.Foreground = Brushes.White;
                 labelPeriodo.Foreground = Brushes.White;
                 stackPanel2.Background = new SolidColorBrush(
@@ -117,12 +131,11 @@ namespace ID_Finder
                                 model.Inicio % 100 + " - " + model.Fim / 100 +
                                 ":" + model.Fim % 100;
                 progressBar.Value = (now - model.Inicio) * 100 / (model.Fim - model.Inicio);
-                Console.WriteLine("Info: UI Updated at {0}", DateTime.Now);
                 if (!model.Presenca.Equals("-"))
                     labelLista.Visibility = Visibility.Visible;
                 else
                     labelLista.Visibility = Visibility.Hidden;
-                labelLista.Content = model.Presenca;
+                linkPresenca = model.Presenca;
                 stackPanel2.Visibility = Visibility.Visible;
                 labelNotificacao.Visibility = Visibility.Hidden;
             }
@@ -193,7 +206,12 @@ namespace ID_Finder
 
         private void labelLista_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            System.Diagnostics.Process.Start(labelLista.Content.ToString());
+            System.Diagnostics.Process.Start(linkPresenca);
+        }
+
+        private void labelLista_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(linkPresenca);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -204,6 +222,30 @@ namespace ID_Finder
         private void buttonSeguir_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://zoom.us/j/" + proximaAula.ID);
+        }
+
+        private void SearchUpdate()
+        {
+            try
+            {
+                var client = new MongoClient(
+                    "mongodb+srv://client:BU2cK8OB58mdk6QJ@clusteridfinder.6ocgc.mongodb.net/ClusterIDFinder?retryWrites=true&w=majority"
+                );
+                var database = client.GetDatabase("horarios");
+                var collection = database.GetCollection<BsonDocument>("update");
+                var dados = collection.Find(Builders<BsonDocument>.Filter.Empty).ToList();
+
+                foreach(var dado in dados)
+                {
+                    Version version = new Version(dado["version"].ToString(),
+                        DateTime.FromFileTime(long.Parse(dado["lancamento"].ToString())), dado["mudancas"].ToString(),
+                        dado["link"].ToString());
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 
@@ -217,6 +259,66 @@ namespace ID_Finder
 
         public long ID { get; set; }
         public string Cadeira { get; set; }
+
+    }
+
+    public struct Version
+    {
+        public Version(string versao, DateTime lancamento, string mudancas, string link)
+        {
+            Versao = versao;
+            Lancamento = lancamento;
+            Mudancas = mudancas;
+            Link = link;
+            if(!_antigaVersao.Equals(Versao))
+                Notify();
+        }
+
+        void Notify()
+        {
+            System.Windows.Forms.NotifyIcon notify = new System.Windows.Forms.NotifyIcon();
+            notify.Icon = new System.Drawing.Icon("ID.ico");
+            notify.BalloonTipTitle = "Update! " + Versao;
+            notify.BalloonTipText = Mudancas + "\nClique pra actualizar.";
+            notify.Text = Mudancas + "\nClique pra actualizar.";
+            notify.Click += Notify_Click;
+            notify.DoubleClick += Notify_DoubleClick;
+            notify.BalloonTipClicked += Notify_BalloonTipClicked;
+            notify.MouseClick += Notify_MouseClick;
+            notify.Visible = true;
+            notify.ShowBalloonTip(50000);
+        }
+
+        private void Notify_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            Accao();
+        }
+
+        private void Notify_BalloonTipClicked(object sender, EventArgs e)
+        {
+            Accao();
+        }
+
+        private void Notify_DoubleClick(object sender, EventArgs e)
+        {
+            Accao();
+        }
+
+        private void Notify_Click(object sender, EventArgs e)
+        {
+            Accao();
+        }
+
+        private void Accao()
+        {
+            System.Diagnostics.Process.Start(Link);
+        }
+
+        private const string _antigaVersao = "1.0.0.5";
+        public string Versao { get; set; }
+        public DateTime Lancamento { get; set; }
+        public string Mudancas { get; set; }
+        public string Link { get; set; }
 
     }
 }

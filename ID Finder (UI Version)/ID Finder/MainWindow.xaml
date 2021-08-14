@@ -36,7 +36,11 @@
                 </Button.BitmapEffect>
                 Abrir aula
             </Button>
-            <Label Visibility="Hidden" Margin="0,10" Name="labelLista" HorizontalAlignment="Center" Foreground="Blue" MouseDoubleClick="labelLista_MouseDoubleClick" Cursor="Hand">Lista de Presenca</Label>
+            <Button Visibility="Hidden" Width="140" Margin="0,10" Background="#FF76B9F3" Name="labelLista" HorizontalAlignment="Center" MouseDoubleClick="labelLista_MouseDoubleClick" Click="labelLista_Click" Cursor="Hand">
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
+                </Button.BorderBrush>
+                Abrir lista de presenças</Button>
         </StackPanel>
 
         <Button Name="buttonSeguir" Width="150" Height="20" Visibility="Hidden" FontSize="14" BorderThickness=".25" Background="#FF76B9F3" FontFamily="Candara" FontWeight="Bold" Cursor="Hand" Click="buttonSeguir_Click">
